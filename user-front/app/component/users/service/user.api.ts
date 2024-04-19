@@ -18,7 +18,6 @@ export const findUserByIdAPI = async (id: number) => {
         const response = await instance.get('/api/users/detail', {
             params: { id }
         })
-        console.log("response ", response)
         return response.data
     } catch (error) {
         console.log(error, " findUserByIdAPI EERR!!!")
@@ -29,7 +28,7 @@ export const findUserByIdAPI = async (id: number) => {
 export const countUsersAPI = async () => {
     try {
         const response = await instance.get('/api/users/count')
-        console.log("count response ", response.data)
+
         return response.data
     } catch (error) {
         console.log(error, " countAllUsersAPI EERR!!!")
@@ -64,10 +63,9 @@ export const deleteUserByIdAPI = async (props: IUser) => {
 export const loginUserAPI = async (props: any) => {
     try {
         const response = await instance.post('/api/users/login', props)
-        console.log("response ", JSON.stringify(response.data))
         return response.data
     } catch (error) {
-        console.log(error, " loginUserByIdAPI EERR!!!")
+        console.log(error, "loginUserByIdAPI EERR!!!")
         return error
     }
 }
@@ -83,3 +81,15 @@ export const joinUserAPI = async (props: any) => {
     }
 }
 
+export const existsByUsernameAPI = async (username: string) => {
+    try {
+        const response = await instance.get('/api/users/existName', {
+            params: {username} 
+        })
+        console.log("exist username response "+ response.data)
+        return response.data
+    } catch (error) {
+        console.log(error, " existsByUsernameAPI EERR!!!")
+        return error
+    }
+}

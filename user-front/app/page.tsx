@@ -6,11 +6,12 @@ import './globals.css'
 import { PG } from "./component/common/enums/PG";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { findUserById, loginUser } from "./component/users/service/user.service";
-import { getAuth } from "./component/users/service/user.slice";
+import { existsByUsername, findUserById, loginUser } from "./component/users/service/user.service";
+import { getAuth, getflag } from "./component/users/service/user.slice";
 import { useSelector } from "react-redux";
 import { IUser } from "./component/users/model/user.model";
 import nookies, { parseCookies, setCookie } from 'nookies'
+import { jwtDecode } from "jwt-decode";
 
 const SERVER = 'http://localhost:8080'
 
@@ -19,59 +20,73 @@ export default function Home() {
 
     const dispatch = useDispatch();
     const auth = useSelector(getAuth);
+    const existusername: boolean = useSelector(getflag);
 
-    const [user, setUser] = useState({} as IUser)
+    const [user, setUser] = useState({ username: '' } as IUser)
+
+    const [isWrongId, setIsWrongId] = useState('');
+    const [isWrongPw, setIsWrongPw] = useState('');
+
+    const [len, setLen] = useState(false);
+    const [msg, setMsg] = useState('');
 
     const handleUsername = (e: any) => {
+        // 정규표현식 : 영어 대소문자로 시작하는 6~20자의 영어소문자 또는 숫자
+        // 한글 : ㄱ-힣,  /g 전역
+        // const ID_CHECK = /^[a-zA-Z0-9]+[a-zA-Z0-9]{5,19}$/g
+        const ID_CHECK = /^[a-zA-Z][a-zA-Z0-9]{5,9}$/g;
+        ID_CHECK.test(user.username + "") ? setIsWrongPw('false') : setIsWrongPw('true');
         setUser({
             ...user,
             username: e.target.value
         })
+        setLen(false)
     }
 
+
     const handlePassword = (e: any) => {
+        const PW_CHECK = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{6,15}$/g;
+        PW_CHECK.test(user.password + "") ? setIsWrongPw('false') : setIsWrongPw('true');
         setUser({
             ...user,
             password: e.target.value
         })
     }
 
+
     const handleSubmit = () => {
-        console.log('login insert : ' + JSON.stringify(user))
-        dispatch(loginUser(user))
-        
+        setLen(true)
+        console.log("existusername " + existusername)
+        if (existusername) {
+            setMsg("* 있는 아이디입니다.")
+            dispatch(loginUser(user))
+        } else {
+            setMsg("* 회원가입을 진행해주세요.")
+        }
     }
+
+    useEffect(() => {
+        dispatch(existsByUsername(user.username))
+    }, [user.username])
 
     useEffect(() => {
         if (auth.message === 'SUCCESS') {
             setCookie({}, 'message', auth.message, { httpOnly: false, path: '/' })
             setCookie({}, 'token', auth.token, { httpOnly: false, path: '/' })
-            console.log("login 회원 id " + user.id)
             console.log("서버에서 넘어온 message " + parseCookies().message)
             console.log("서버에서 넘어온 token " + parseCookies().token)
-            router.push(`${PG.BOARD}/list`)
+            console.log("token decoding 내용 " + jwtDecode<any>(parseCookies().token).username)
+            // router.push(`${PG.BOARD}/list`)
         }
         if (auth.message === 'FAIL') {
-            alert("다시 시도하세요")
+            alert("Wrong password. 시도하세요")
             router.push(`/`)
         }
+
     }, [auth])
 
 
     return <>
-        {/* <div className='text-center'>
-            <h1><b>welcom to react world</b></h1> <br />
-            <Link href={`${PG.USER}/login`}> login </Link><br /><br />
-            <Link href={`${PG.DEMO}/mui-demo`}>mui demo</Link><br /><br />
-            <Link href={`${PG.USER}/join`}>join</Link><br /><br />
-            <Link href={`${PG.USER}/list`}>all users</Link><br /><br />
-            <Link href={`${PG.DEMO}/companies`}>companies</Link><br /><br />
-            <Link href={`${PG.BOARD}/list`}>All boards</Link><br /><br />
-            <Link href={`${PG.ARTICLE}/list`}>ALL Article</Link><br /><br />
-            <Link href={`${PG.DEMO}/counter`}>counter demo</Link><br /><br />
-            <Link href={`${PG.DEMO}/redux-counter`}> redux counter demo</Link><br /><br />
-        </div> */}
-
 
         <div className="flex items-center justify-center w-full px-5 sm:px-0">
             <div className="flex bg-white rounded-lg shadow-lg border overflow-hidden max-w-sm lg:max-w-4xl w-full">
@@ -85,25 +100,45 @@ export default function Home() {
                     <p className="text-xl text-gray-600 text-center">Welcome back!</p>
                     <div className="mt-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
-                            Email Address
-                            <br />Reuven
+                            ID
+                            <br />msowood4
                         </label>
                         <input
-                            className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
-                            type="email" onChange={handleUsername}
-                            required
-                        />
+                            className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:   outline-2 focus:outline-blue-700"
+                            type="text" name="username" onChange={handleUsername}
+                            required />
+                        {len === false ?
+                            user.username?.length === 0 || user.username === undefined ? <pre></pre> :
+                                (isWrongId === 'true' ?
+                                    user.username.length > 10 ?
+                                        (<pre><h6 className='text-orange-500'>* username 12자를 넘었습니다..</h6></pre>) :
+                                        (<pre><h6 className='text-red-500'>* Wrong username form.</h6></pre>) :
+                                    (<pre><h6 className='text-green-500'>* good username form.</h6></pre>)
+                                )
+                            : <pre><h6 className='text-red-500'>{msg}</h6></pre>}
+
                     </div>
                     <div className="mt-4 flex flex-col justify-between">
                         <div className="flex justify-between">
                             <label className="block text-gray-700 text-sm font-bold mb-2">
                                 Password
+                                <br />cA4~+bN&_1LxW
                             </label>
                         </div>
                         <input
                             className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
-                            type="text" onChange={handlePassword}
+                            type="text" name="password" onChange={handlePassword}
                         />
+
+                        {user.password?.length === 0 || user.password === undefined ? <pre></pre> :
+                            (isWrongPw === 'true' ?
+                                user.password.length > 12 ?
+                                    (<pre><h6 className='text-orange-500'>* password가 12자를 넘었습니다..</h6></pre>) :
+                                    (<pre><h6 className='text-red-500'>* Wrong password form.<br />영어 소문자, 대문자, #?!@$ %^&*- 포함<br />6자이상 </h6></pre>) :
+                                (<pre><h6 className='text-green-500'>* good password form.</h6></pre>)
+                            )
+                        }
+
                         <a
                             href="#"
                             className="text-xs text-gray-500 hover:text-gray-900 text-end w-full mt-2"

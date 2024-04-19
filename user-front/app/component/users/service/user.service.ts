@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { countUsersAPI, deleteUserByIdAPI, fetchAllUsersAPI, findUserByIdAPI, joinUserAPI, loginUserAPI, modifyUserByIdAPI } from "./user.api";
+import { countUsersAPI, deleteUserByIdAPI, existsByUsernameAPI, fetchAllUsersAPI, findUserByIdAPI, joinUserAPI, loginUserAPI, modifyUserByIdAPI } from "./user.api";
 import { IUser } from "../model/user.model";
 
 export const fetchAllUsers: any = createAsyncThunk(
@@ -35,4 +35,9 @@ export const loginUser: any = createAsyncThunk(
 export const joinUser: any = createAsyncThunk(
     'users/joinUser',
     async (props: IUser) => await joinUserAPI(props)
+)
+
+export const existsByUsername:any = createAsyncThunk(
+    'users/existsByUsername',
+    async (username: string) => await existsByUsernameAPI(username)
 )
