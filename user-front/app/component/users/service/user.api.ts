@@ -1,4 +1,4 @@
-import { instance } from "@/app/component/common/configs/axios-config"
+import  instance  from "@/app/component/common/configs/axios-config"
 import { IUser } from "../model/user.model"
 
 export const fetchAllUsersAPI = async (page: number) => {
@@ -90,6 +90,17 @@ export const existsByUsernameAPI = async (username: string) => {
         return response.data
     } catch (error) {
         console.log(error, " existsByUsernameAPI EERR!!!")
+        return error
+    }
+}
+
+export const logoutAPI = async () =>{
+    try{
+        const response = await instance.get('/api/users/logout',)
+        console.log('logout response', JSON.stringify(response.data))
+        return response.data
+    }catch(error){
+        console.log(error, " logoutAPI EERR!!!")
         return error
     }
 }

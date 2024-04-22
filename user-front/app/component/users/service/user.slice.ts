@@ -13,7 +13,7 @@ const status = {
 interface IAuth{
     status? : number,
     message? : string,
-    token? : string
+    Token? : string
 }
 
 interface userState {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import './globals.css'
 import { PG } from "./component/common/enums/PG";
@@ -30,16 +30,21 @@ export default function Home() {
     const [len, setLen] = useState(false);
     const [msg, setMsg] = useState('');
 
+    const formRef = useRef<HTMLInputElement>(null)
+
     const handleUsername = (e: any) => {
         // 정규표현식 : 영어 대소문자로 시작하는 6~20자의 영어소문자 또는 숫자
         // 한글 : ㄱ-힣,  /g 전역
         // const ID_CHECK = /^[a-zA-Z0-9]+[a-zA-Z0-9]{5,19}$/g
-        const ID_CHECK = /^[a-zA-Z][a-zA-Z0-9]{5,9}$/g;
-        ID_CHECK.test(user.username + "") ? setIsWrongPw('false') : setIsWrongPw('true');
+        const ID_CHECK = /^[a-zA-Z][a-zA-Z0-9]{5,11}$/g;
+
+        ID_CHECK.test(user.username + "") ? setIsWrongId('false') : setIsWrongId('true');
+
         setUser({
             ...user,
             username: e.target.value
         })
+
         setLen(false)
     }
 
@@ -51,40 +56,46 @@ export default function Home() {
             ...user,
             password: e.target.value
         })
+        setLen(false)
     }
 
 
     const handleSubmit = () => {
+        console.log('login page 입력받은 내용 ' + JSON.stringify(user))
         setLen(true)
-        console.log("existusername " + existusername)
-        if (existusername) {
-            setMsg("* 있는 아이디입니다.")
-            dispatch(loginUser(user))
-        } else {
-            setMsg("* 회원가입을 진행해주세요.")
+        dispatch(existsByUsername(user.username))
+            .then((res: any) => {
+                if (res.payload == true) {
+                    setMsg("* 있는 아이디입니다.")
+                    dispatch(loginUser(user))
+                        .then((resp: any) => {
+                            setCookie({}, 'message', resp.payload.message, { httpOnly: false, path: '/' })
+                            setCookie({}, 'accessToken', resp.payload.accessToken, { httpOnly: false, path: '/' })
+                            console.log("서버에서 넘어온 message " + parseCookies().message)
+                            console.log("서버에서 넘어온 token " + parseCookies().accessToken)
+                            console.log("token decoding 내용 " + jwtDecode<any>(parseCookies().accessToken).username)
+                            router.push(`${PG.BOARD}/list`)
+                            router.refresh()
+                        })
+                        .catch((err: any) => {
+                            alert("Wrong password. 시도하세요")
+                        })
+                } else {
+                    setMsg('* 회원가입을 진행해주세요.')
+                }
+            })
+
+            .catch((err: any) => {
+            })
+            .finally(() => {
+                console.log('최종적으로 반드시 이뤄져야할 로직')
+                console.log("existusername " + existusername)
+            })
+
+        if (formRef.current) {
+            formRef.current.value = "";
         }
     }
-
-    useEffect(() => {
-        dispatch(existsByUsername(user.username))
-    }, [user.username])
-
-    useEffect(() => {
-        if (auth.message === 'SUCCESS') {
-            setCookie({}, 'message', auth.message, { httpOnly: false, path: '/' })
-            setCookie({}, 'token', auth.token, { httpOnly: false, path: '/' })
-            console.log("서버에서 넘어온 message " + parseCookies().message)
-            console.log("서버에서 넘어온 token " + parseCookies().token)
-            console.log("token decoding 내용 " + jwtDecode<any>(parseCookies().token).username)
-            // router.push(`${PG.BOARD}/list`)
-        }
-        if (auth.message === 'FAIL') {
-            alert("Wrong password. 시도하세요")
-            router.push(`/`)
-        }
-
-    }, [auth])
-
 
     return <>
 
@@ -107,15 +118,16 @@ export default function Home() {
                             className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:   outline-2 focus:outline-blue-700"
                             type="text" name="username" onChange={handleUsername}
                             required />
+
+
                         {len === false ?
                             user.username?.length === 0 || user.username === undefined ? <pre></pre> :
                                 (isWrongId === 'true' ?
-                                    user.username.length > 10 ?
-                                        (<pre><h6 className='text-orange-500'>* username 12자를 넘었습니다..</h6></pre>) :
                                         (<pre><h6 className='text-red-500'>* Wrong username form.</h6></pre>) :
                                     (<pre><h6 className='text-green-500'>* good username form.</h6></pre>)
                                 )
                             : <pre><h6 className='text-red-500'>{msg}</h6></pre>}
+
 
                     </div>
                     <div className="mt-4 flex flex-col justify-between">
@@ -127,13 +139,13 @@ export default function Home() {
                         </div>
                         <input
                             className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
-                            type="text" name="password" onChange={handlePassword}
+                            type="text" name="password" onChange={handlePassword} ref={formRef}
                         />
 
                         {user.password?.length === 0 || user.password === undefined ? <pre></pre> :
                             (isWrongPw === 'true' ?
-                                user.password.length > 12 ?
-                                    (<pre><h6 className='text-orange-500'>* password가 12자를 넘었습니다..</h6></pre>) :
+                                user.password.length > 15 ?
+                                    (<pre><h6 className='text-orange-500'>* password가 15자를 넘었습니다..</h6></pre>) :
                                     (<pre><h6 className='text-red-500'>* Wrong password form.<br />영어 소문자, 대문자, #?!@$ %^&*- 포함<br />6자이상 </h6></pre>) :
                                 (<pre><h6 className='text-green-500'>* good password form.</h6></pre>)
                             )
