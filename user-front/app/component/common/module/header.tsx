@@ -49,7 +49,7 @@ function Header() {
 
             <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
               <span className="sr-only">Open user menu</span>
-              <img className="w-8 h-8 rounded-full" src="img/profile.jpg" data-popover-target="profile-menu" />
+              <img className="w-20 h-20 rounded-full" src="/img/user/profile.jpg" data-popover-target="profile-menu" />
             </button>
           }
 

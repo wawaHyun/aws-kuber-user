@@ -2,7 +2,7 @@ import  instance  from '@/app/component/common/configs/axios-config'
 
 export const AllBoardsAPI = async (page: number) => {
     try {
-        const response = await instance.get('/api/boards/list', {
+        const response = await instance().get('/api/boards/list', {
             params: { page, limit: 10 } //1page 당 10 게시글
         });
         return response.data
@@ -14,7 +14,7 @@ export const AllBoardsAPI = async (page: number) => {
 
 export const findBoardsAPI = async (id: number) => {
     try {
-        const response = await instance.get('/api/boards/detail', {
+        const response = await instance().get('/api/boards/detail', {
             params: { id }
         });
         return response.data
@@ -28,7 +28,7 @@ export const findBoardsAPI = async (id: number) => {
 
 export const countBoardsAPI = async () => {
     try {
-        const response = await instance.get('/api/boards/count');
+        const response = await instance().get('/api/boards/count');
         console.log("response ", response)
         return response.data
     } catch (error) {
@@ -41,7 +41,7 @@ export const countBoardsAPI = async () => {
 
 export const modifyBoardsAPI = async (params: IBoard) => {
     try {
-        const response = await instance.put('/api/boards/modify',params);
+        const response = await instance().put('/api/boards/modify',params);
         return response.data
     } catch (error) {
         console.log(error, " modifyBoardsAPI EERR!!!")
@@ -53,7 +53,7 @@ export const modifyBoardsAPI = async (params: IBoard) => {
 
 export const deleteBoardsAPI = async (id: number) => {
     try {
-        const response = await instance.delete('/api/boards/dalete', {
+        const response = await instance().delete('/api/boards/dalete', {
             params: { id }
         });
         return response.data

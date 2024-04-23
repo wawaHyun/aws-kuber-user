@@ -2,7 +2,7 @@ import  instance  from '@/app/component/common/configs/axios-config'
 
 export const AllArticlesAPI = async (page: number) => {
     try {
-        const response = await instance.get('/api/articles/list', {
+        const response = await instance().get('/api/articles/list', {
             params: { page, limit: 10 } //1page 당 10 게시글
         })
         return response.data
@@ -16,7 +16,7 @@ export const AllArticlesAPI = async (page: number) => {
 
 export const findArticlesAPI = async (id: number) => {
     try {
-        const response = await instance.get('/api/articles/detail', {
+        const response = await instance().get('/api/articles/detail', {
             params: { id }
         })
         console.log("response " + response)
@@ -30,7 +30,7 @@ export const findArticlesAPI = async (id: number) => {
 
 export const countArticlesAPI = async () => {
     try {
-        const response = await instance.get('/api/articles/count')
+        const response = await instance().get('/api/articles/count')
         console.log("count response " + response.data)
         return response.data
     } catch (error) {
@@ -42,7 +42,7 @@ export const countArticlesAPI = async () => {
 
 export const modifyArticlesAPI = async (props: IArticle) => {
     try {
-        const response = await instance.put('/api/articles/modify',props)
+        const response = await instance().put('/api/articles/modify',props)
         console.log("response " + JSON.stringify(response.data))
         return response.data
     } catch (error) {
@@ -55,7 +55,7 @@ export const modifyArticlesAPI = async (props: IArticle) => {
 
 export const deleteArticlesAPI = async (id: number) => {
     try {
-        const response = await instance.delete('/api/articles/delete', {
+        const response = await instance().delete('/api/articles/delete', {
             params: { id }
         })
         return response.data
@@ -68,7 +68,7 @@ export const deleteArticlesAPI = async (id: number) => {
 
 export const saveArticleAPI = async (props: any) => {
     try {
-        const response = await instance.post('/api/articles/save', props)
+        const response = await instance().post('/api/articles/save', props)
         console.log("response ", JSON.stringify(response.data.message))
         return response.data.message
     } catch (error) {
@@ -79,7 +79,7 @@ export const saveArticleAPI = async (props: any) => {
 
 export const findByBoardIdAPI = async (id: number) => {
     try {
-        const response = await instance.get('/api/articles/card', {
+        const response = await instance().get('/api/articles/card', {
             params: { id }
         })
         return response.data

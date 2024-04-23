@@ -19,14 +19,14 @@ export default function Boardcards() {
 
     return (<>
     <h6>board list in~!!</h6>
-{/* <div className="flex flex-row">
+<div className="flex flex-row">
         {allBoards&&allBoards.map((elem: IBoard) =>(
             <CardButton key={elem.id} id={elem.id} title={elem.title} 
             description={elem.description}/>
         )
         )}
         
-</div> */}
+</div>
 
     </>)
 }

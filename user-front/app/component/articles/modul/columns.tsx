@@ -44,6 +44,14 @@ export default function articleColumns(): GridColDef[] {
             flex: 0.04,
             minWidth: 30,
             sortable: false,
+            field: 'writer',
+            headerName: 'WRITER',
+            renderCell: ({ row }: CellType) => MyTypography(row.writer, "1.5rem")
+        },
+        {
+            flex: 0.04,
+            minWidth: 30,
+            sortable: false,
             field: 'modDate',
             headerName: 'mod date',
             renderCell: ({ row }: CellType) => MyTypography(row.modDate, "1.5rem")
