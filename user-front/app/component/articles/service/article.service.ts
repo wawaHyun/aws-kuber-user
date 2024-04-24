@@ -46,11 +46,7 @@ export const deleteArticleById: any = createAsyncThunk(
 
 export const saveArticle: any = createAsyncThunk(
     'articles/saveArticleById',
-    async (props: IArticle) => {
-        console.log('saveArticleById id : ' + props)
-        const data: any = await saveArticleAPI(props);
-        return data
-    }
+    async (props: IArticle) => await saveArticleAPI(props)
 )
 
 export const findByBoard: any = createAsyncThunk(

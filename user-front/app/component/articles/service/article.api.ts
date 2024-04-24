@@ -3,7 +3,7 @@ import  instance  from '@/app/component/common/configs/axios-config'
 export const AllArticlesAPI = async (page: number) => {
     try {
         const response = await instance().get('/api/articles/list', {
-            params: { page, limit: 10 } //1page 당 10 게시글
+            params: { page:20, limit: 20 } //1page 당 10 게시글
         })
         return response.data
     } catch (error) {
@@ -69,8 +69,8 @@ export const deleteArticlesAPI = async (id: number) => {
 export const saveArticleAPI = async (props: any) => {
     try {
         const response = await instance().post('/api/articles/save', props)
-        console.log("response ", JSON.stringify(response.data.message))
-        return response.data.message
+        console.log("response ", JSON.stringify(response.data))
+        return response.data
     } catch (error) {
         console.log(error, " saveArticleAPI EERR!!!")
         return error

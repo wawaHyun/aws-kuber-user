@@ -10,6 +10,8 @@ import { saveArticle } from '@/app/component/articles/service/article.service';
 import { PG } from '@/app/component/common/enums/PG';
 import { getAllBoards } from '@/app/component/boards/service/board.slice';
 import { fetchAllBoards } from '@/app/component/boards/service/board.service';
+import { parseCookies } from 'nookies';
+import { jwtDecode } from 'jwt-decode';
 
 
 
@@ -21,44 +23,46 @@ export default function ArticleSave({ params }: any) {
   const SaveArticle = useSelector(getSaveArticle);
   const board: [] = useSelector(getAllBoards);
 
-  const [saveArti, setSaveArti] = useState({} as IArticle)
+  const [saveArti, setSaveArti] = useState({board:params.id, writer:jwtDecode<any>(parseCookies().accessToken).id} as IArticle)
+  // const [saveArti, setSaveArti] = useState({board:params.id} as IArticle)
+  // const [saveArti, setSaveArti] = useState({} as IArticle)
 
   const handleInsert = (e: any) => {
     const {
       target: { value, name }
     } = e;
     setSaveArti(dto => ({ ...dto, [name]: value }));
-    console.log("log " + JSON.stringify(saveArti))
+    // console.log("log " + JSON.stringify(saveArti))
   }
 
   const handleSubmit = (e: any) => {
     console.log(saveArti)
     dispatch(saveArticle(saveArti))
-    router.push(`${PG.ARTICLE}/list/${saveArti.board}`)
+    // router.push(`${PG.ARTICLE}/list/${saveArti.board}`)
   }
 
   const handelCancel = (e: any) => {
-    router.back()
+    console.log(saveArti)
+    // router.back()
   }
 
   useEffect(() => {
     dispatch(fetchAllBoards(1))
-  }, [SaveArticle])
+  }, [])
 
 
 
   return (
 
     <div className="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
-      {MyTypography('Article 작성', "1.5rem")}
-      {MyTypography('작성자 : ' + saveArti.writer, '1.5rem')}
-
       <form className="max-w-sm mx-auto">
-        <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Board title</label>
+        <form className="block mb-2 text-gray-900 dark:text-white" name="writer" >{jwtDecode<any>(parseCookies().accessToken).username}님의 Article 작성</form>
+        {/* {MyTypography('작성자 : ' + jwtDecode<any>(parseCookies().accessToken).username, '1.5rem')} */}
+        {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Board title</label> */}
         <select name="board" onChange={handleInsert} defaultValue={params.id}
-          id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           {board.map((i: IBoard) =>
-            <option value={i.id} >{i.title}</option>
+            <option key={i.id} value={i.id}>{i.title}</option>
           )}
         </select>
       </form>

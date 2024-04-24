@@ -82,7 +82,7 @@ const AllarticlesPage: NextPage = ({ params }: any) => {
             
             <button className="btn overflow-hidden relative w-64 bg-blue-500 text-white py-4 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
         before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-300"
-                onClick={() => router.push(`${PG.ARTICLE}/save`)}>
+                onClick={() => router.push(`${PG.ARTICLE}/save/${params.id}`)}>
 
                 <span className="relative">글쓰러가기</span>
                 
@@ -94,7 +94,14 @@ const AllarticlesPage: NextPage = ({ params }: any) => {
             {allArticles && <DataGrid// 🔥 4
                 rows={allArticles}
                 columns={articleColumns()}
-                pageSizeOptions={[5, 10, 20, 200]} // 4-1
+                initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 5,
+                      },
+                    },
+                  }}
+                pageSizeOptions={[5, 10,20]} // 4-1
                 checkboxSelection
             />}
         </div>

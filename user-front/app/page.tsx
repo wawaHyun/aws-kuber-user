@@ -114,7 +114,7 @@ export default function Home() {
                             ID
                             <br />msowood4
                         </label>
-                        <input
+                        <input  
                             className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:   outline-2 focus:outline-blue-700"
                             type="text" name="username" onChange={handleUsername}
                             required />

@@ -10,7 +10,7 @@ interface ILinkButton {
 }
 
 export const linkButtonTitles = [
-    { id:0, title: 'join', path: `${PG.USER}/join` },
+    { id:0, title: 'join', path: `${PG.USER}/join2` },
     { id:1, title: 'Home', path: '/' },
     { id:3, title: 'counter', path: `${PG.DEMO}/counter` },
     { id:4, title: 'board list', path: `${PG.BOARD}/list` },
