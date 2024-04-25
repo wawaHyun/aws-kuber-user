@@ -3,9 +3,12 @@ import { Link } from '@mui/material'
 import { GridColDef } from '@mui/x-data-grid'
 import { MyTypography } from '../../common/style/cell';
 import { PG } from '../../common/enums/PG';
-
+import { deleteArticleById } from '../service/article.service';
+import { useDispatch } from 'react-redux';
 
 export default function articleColumns(): GridColDef[] {
+
+    const dispatch = useDispatch();
 
     interface CellType {
         row: IArticle;
@@ -63,6 +66,34 @@ export default function articleColumns(): GridColDef[] {
             field: 'regDate',
             headerName: 'reg date',
             renderCell: ({ row }: CellType) => MyTypography(row.regDate, "1.5rem")
+        },
+        {
+            flex: 0.04,
+            minWidth: 30,
+            sortable: false,
+            field: 'update',
+            headerName: 'UPDATE',
+            renderCell: ({ row }: CellType) =>
+                <button className="btn overflow-hidden relative w-full h-full bg-blue-500 text-white rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
+            before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-300"
+                    onClick={() => `${PG.ARTICLE}/update/${row.id}`}> UPDATE</button>   
+        },
+        {
+            flex: 0.04,
+            minWidth: 30,
+            sortable: false,
+            field: 'delete',
+            headerName: 'DELETE',
+            renderCell: ({ row }: CellType) =>
+                <button className="btn overflow-hidden relative w-full h-full bg-blue-500 text-white rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
+            before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-300"
+                    onClick={() => {
+                        alert("article을 삭제합니다.")
+                        console.log("delete article id : {}", row.id)
+                        dispatch(deleteArticleById(row.id))
+                        location.reload();
+                    }
+                    }> DELETE</button>
         }
 
     ]

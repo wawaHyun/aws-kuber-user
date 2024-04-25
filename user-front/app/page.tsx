@@ -128,7 +128,6 @@ export default function Home() {
                                 )
                             : <pre><h6 className='text-red-500'>{msg}</h6></pre>}
 
-
                     </div>
                     <div className="mt-4 flex flex-col justify-between">
                         <div className="flex justify-between">

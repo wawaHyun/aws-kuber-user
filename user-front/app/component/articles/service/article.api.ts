@@ -10,9 +10,19 @@ export const AllArticlesAPI = async (page: number) => {
         console.log(error + " AllArticlesAPI EERR!!!")
         return error
     }
-
 }
 
+export const mylistArticlesAPI = async (id: number) => {
+    try {
+        const response = await instance().get('/api/articles/mylist', {
+            params: {id} //1page 당 10 게시글
+        })
+        return response.data
+    } catch (error) {
+        console.log(error + " mylistArticlesAPI EERR!!!")
+        return error
+    }
+}
 
 export const findArticlesAPI = async (id: number) => {
     try {
@@ -25,7 +35,6 @@ export const findArticlesAPI = async (id: number) => {
         console.log(error + " findArticlesAPI EERR!!!")
         return error
     }
-
 }
 
 export const countArticlesAPI = async () => {
@@ -49,7 +58,6 @@ export const modifyArticlesAPI = async (props: IArticle) => {
         console.log(error + " modifyArticlesAPI EERR!!!")
         return error
     }
-
 }
 
 
@@ -63,7 +71,6 @@ export const deleteArticlesAPI = async (id: number) => {
         console.log(error + " deleteArticlesAPI EERR!!!")
         return error
     }
-
 }
 
 export const saveArticleAPI = async (props: any) => {
@@ -87,5 +94,4 @@ export const findByBoardIdAPI = async (id: number) => {
         console.log(error + " findByBoardIdAPI EERR!!!")
         return error
     }
-
 }

@@ -16,7 +16,7 @@ import { PG } from '@/app/component/common/enums/PG';
 
 
 
-export default function ArticleSave({ params }: any) {
+export default function ArticleUpdate({ params }: any) {
 
   const router = useRouter();
 
@@ -25,25 +25,7 @@ export default function ArticleSave({ params }: any) {
 
   const board: [] = useSelector(getAllBoards);
   
-  const SaveArticle = useSelector(getSaveArticle);
-  const [saveArti, setSaveArti] = useState({ board: params.id, writer: jwtDecode<any>(parseCookies().accessToken).id } as IArticle)
-
-  const handleInsert = (e: any) => {
-    const {
-      target: { value, name }
-    } = e;
-    setSaveArti(dto => ({ ...dto, [name]: value }));
-  }
-
-  const handleSubmit2 = (e: any) => {
-    console.log(saveArti)
-    dispatch(saveArticle(saveArti))
-    router.push(`${PG.ARTICLE}/list/${saveArti.board}`)
-  }
-
   const handelCancel = (e:any) => {
-    // saveArti = useState 사용했을때.
-    console.log(saveArti)
     router.back()
   }
 
@@ -56,12 +38,7 @@ export default function ArticleSave({ params }: any) {
     .catch((error:any)=>{
       console.log('article page onSubmit error : {}',error)
     })
-  } 
-
-  useEffect(() => {
-    dispatch(fetchAllBoards(1))
-  }, [])
-
+  }
 
 
   return (
@@ -69,7 +46,7 @@ export default function ArticleSave({ params }: any) {
       <div className="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
         <input className="block mb-2 text-gray-900 dark:text-white" 
         type='hidden'value={jwtDecode<any>(parseCookies().accessToken).id} {...register('writer', { required: true })} readOnly/>
-          {MyTypography(jwtDecode<any>(parseCookies().accessToken).username + '님의 Article 작성', '1.5rem')}
+          {MyTypography(jwtDecode<any>(parseCookies().accessToken).username + '님의 Article 수정하기', '1.5rem')}
         <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">good good goood</label>
         <select defaultValue={params.id} {...register('board', { required: true })}   
           className="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -105,7 +82,7 @@ export default function ArticleSave({ params }: any) {
           {/* <div className="btn  overflow-hidden relative w-30 bg-blue-500 text-white p-3 px-8 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
         before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-00"
             onSubmit={handleSubmit}> Post </div> */}
-          <input type="submit" value="SUBMIT"/>
+          <input type="submit" value="SUBMIT" />
         </div>
       </div>
     </form>

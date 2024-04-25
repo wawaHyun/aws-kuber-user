@@ -1,6 +1,6 @@
 
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteArticleById, fetchAllArticles, findArticleById ,findByBoard,findCountArticle,modifyArticleById, saveArticle} from './article.service';
+import { deleteArticleById, fetchAllArticles, fetchMylistArticles, findArticleById ,findByBoard,findCountArticle,modifyArticleById, saveArticle} from './article.service';
 
 const articleThunks = [fetchAllArticles]
 
@@ -32,6 +32,7 @@ export const articleSlice = createSlice({
 
         builder
             .addCase(fetchAllArticles.fulfilled, (state: any, { payload }: any) => { state.array = payload })
+            .addCase(fetchMylistArticles.fulfilled, (state: any, { payload }: any) => { state.array = payload })
             .addCase(findArticleById.fulfilled, (state: any, { payload }: any) => { state.json = payload })
             .addCase(findCountArticle.fulfilled, (state: any, { payload }: any) => { state.count = payload })
             .addCase(modifyArticleById.fulfilled, (state: any, { payload }: any) => { state.array = payload })

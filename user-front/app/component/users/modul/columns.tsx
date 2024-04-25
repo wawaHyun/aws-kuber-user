@@ -1,8 +1,9 @@
-import { Link, Typography } from '@mui/material'
-import { GridRowId, GridColDef } from '@mui/x-data-grid'
+import { Link } from '@mui/material'
+import { GridColDef } from '@mui/x-data-grid'
 import { PG } from '@/app/component/common/enums/PG';
 import { IUser } from '../model/user.model';
 import { MyTypography } from '../../common/style/cell';
+
 
 export default function userColumns(): GridColDef[] {
 
@@ -66,7 +67,5 @@ export default function userColumns(): GridColDef[] {
             headerName: 'JOB',
             renderCell: ({ row }: CellType) => MyTypography(row.job, "1.5rem")
         }
-
-
     ]
 }

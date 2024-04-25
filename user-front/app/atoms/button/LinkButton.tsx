@@ -2,6 +2,8 @@
 
 import { PG } from '@/app/component/common/enums/PG';
 import { Link } from '@mui/material';
+import { jwtDecode } from 'jwt-decode';
+import { parseCookies } from 'nookies';
 
 interface ILinkButton {
     id : number,
@@ -14,8 +16,8 @@ export const linkButtonTitles = [
     { id:1, title: 'Home', path: '/' },
     { id:3, title: 'counter', path: `${PG.DEMO}/counter` },
     { id:4, title: 'board list', path: `${PG.BOARD}/list` },
-    { id:5, title: 'article list', path: `${PG.ARTICLE}/list` },
-    { id:6, title: 'user list', path: `${PG.USER}/list` }
+    // { id:5, title: 'article list', path: `${PG.ARTICLE}/list` },
+    { id:6, title: 'My list', path: `${PG.USER}/detail/${jwtDecode<any>(parseCookies().accessToken).id}` }
 ];
 
 
