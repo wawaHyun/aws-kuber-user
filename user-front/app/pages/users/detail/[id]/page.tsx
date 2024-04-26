@@ -2,13 +2,12 @@
 
 import { PG } from "@/app/component/common/enums/PG"
 import { MyTypography } from "@/app/component/common/style/cell"
-import { deleteUserById, findUserById, modifyUserById } from "@/app/component/users/service/user.service"
+import { deleteUserById, modifyUserById } from "@/app/component/users/service/user.service"
 import { jwtDecode } from "jwt-decode"
 import { useRouter } from 'next/navigation';
 import { parseCookies } from "nookies"
-import { useEffect, useState } from "react"
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 
 export default function UserDetailPage({ params }: any) {
@@ -21,7 +20,13 @@ export default function UserDetailPage({ params }: any) {
   const onSubmit = (data: any) => {
     console.log(JSON.stringify(data))
     dispatch(modifyUserById(data))
-    // router.push(`${PG.USER}/detail/${data.id}`)
+    .then(()=>{
+      router.push(`${PG.USER}/detail/${data.id}`)
+    })
+    .catch((error:any)=>{
+      alert('user infomation modify fail.')
+    })
+
   }
 
   return (
@@ -105,26 +110,30 @@ export default function UserDetailPage({ params }: any) {
         </div>
       </div> */}
 
-      <input type="text" {...register('id', { required: true })} value={userInfo.id} hidden />
-      <input type="text" {...register('username', { required: true })} value={userInfo.username} hidden />
+      <input type="text" {...register('id', { required: true })} value={userInfo.id} hidden readOnly/>
+      <input type="text" {...register('username', { required: true })} value={userInfo.username} hidden readOnly/>
 
-      <div className="w-1/2">
-        <button className="btn text-center overflow-hidden relative poinster bg-white text-blue-500 p-3 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
+      <div className="flex w-full">
+      <div className="md:w-1/3"></div>
+
+          <button className="btn text-center overflow-hidden relative poinster bg-white text-blue-500 p-3 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
         before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-00"
-           onClick={() => router.back()} value="CANCEL" >CANCEL</button>
-         
-         <button className="btn text-center overflow-hidden relative poinster bg-blue-500 text-white p-3 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
+            onClick={() => router.back()} value="CANCEL" >CANCEL</button>
+
+          <button className="btn text-center overflow-hidden relative poinster bg-blue-500 text-white p-3 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
         before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-00">
-           <input type="sumit" value="SUBMIT" className="text-center bg-blue-500 text-white"/>
-           </button>
-        <button className="btn text-center overflow-hidden relative  bg-white text-blue-500 p-3 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
+            <input type="sumit" value="SUBMIT" className="text-center bg-blue-500 text-white" readOnly/>
+          </button>
+
+          <button className="btn text-center overflow-hidden relative  bg-white text-blue-500 p-3 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
         before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-00"
-        onClick={()=>{
-          alert("user를 삭제합니다.")
-          console.log("delete article id & username : {}, {}",userInfo.id, userInfo.username)
-          dispatch(deleteUserById(userInfo.id))
-          location.reload();
-        }} value="DELETE" >DELETE</button>
+            onClick={() => {
+              alert("user를 삭제합니다.")
+              console.log("delete user id & username : {}, {}", userInfo.id, userInfo.username)
+              dispatch(deleteUserById(userInfo.id))
+              location.reload();
+            }} value="DELETE" >DELETE</button>
+   
       </div>
     </form>
 

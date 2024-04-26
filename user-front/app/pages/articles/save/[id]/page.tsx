@@ -97,7 +97,6 @@ export default function ArticleSave({ params }: any) {
           </svg>
           <div className="count ml-auto text-gray-400 text-xs font-semibold">0/300</div>
         </div>
-
         <div className="buttons flex">
           <div className="btn  overflow-hidden relative w-30 bg-white text-blue-500 p-3 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
         before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-00"

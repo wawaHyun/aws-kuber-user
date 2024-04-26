@@ -23,8 +23,7 @@ export default function Boardcards() {
         {allBoards&&allBoards.map((elem: IBoard) =>(
             <CardButton key={elem.id} id={elem.id} title={elem.title} 
             description={elem.description}/>
-        )
-        )}
+        ))}
         
 </div>
 

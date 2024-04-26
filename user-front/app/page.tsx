@@ -112,7 +112,7 @@ export default function Home() {
                     <div className="mt-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
                             ID
-                            <br />msowood4
+                            <br />jaja
                         </label>
                         <input  
                             className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:   outline-2 focus:outline-blue-700"
@@ -133,7 +133,7 @@ export default function Home() {
                         <div className="flex justify-between">
                             <label className="block text-gray-700 text-sm font-bold mb-2">
                                 Password
-                                <br />cA4~+bN&_1LxW
+                                <br />jaj#54g
                             </label>
                         </div>
                         <input

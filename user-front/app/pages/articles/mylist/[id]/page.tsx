@@ -79,6 +79,14 @@ const mylistArticlesPage: NextPage = ({ params }: any) => {
                 pageSizeOptions={[10, 20, 50]} // 4-1
                 checkboxSelection
             />}
+
+<button className="btn overflow-hidden relative w-64 bg-blue-500 text-white py-4 px-4 rounded-xl font-bold uppercase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full 
+        before:bg-pink-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-200 hover:before:animate-ping transition-all duration-300"
+            onClick={() =>(
+                confirm("삭제하시겠습니까?")
+                // alert(checkboxSelection)
+                // dispatch(deleteArticleById(1))
+            )}> 삭제하기 </button>
         </div>
     </>)
 }

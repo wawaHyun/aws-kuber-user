@@ -87,7 +87,7 @@ const AllarticlesPage: NextPage = ({ params }: any) => {
             </button>
 
         <div style={{ height: "100%", width: "100%", fontSize: 50 }}>
-            {allArticles && <DataGrid // 🔥 4
+            {allArticles && <DataGrid 
                 rows={allArticles}
                 columns={articleColumns()}
                 initialState={{
@@ -97,7 +97,7 @@ const AllarticlesPage: NextPage = ({ params }: any) => {
                         },
                     },
                 }}
-                pageSizeOptions={[10, 20, 50]} // 4-1
+                pageSizeOptions={[10, 20, 50]} 
                 checkboxSelection
             />}
             </div>

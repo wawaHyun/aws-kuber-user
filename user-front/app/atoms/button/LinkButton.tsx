@@ -2,23 +2,25 @@
 
 import { PG } from '@/app/component/common/enums/PG';
 import { Link } from '@mui/material';
-import { jwtDecode } from 'jwt-decode';
+import { JwtHeader, JwtPayload, jwtDecode } from 'jwt-decode';
 import { parseCookies } from 'nookies';
 
 interface ILinkButton {
-    id : number,
+    id: number,
     title: string,
     path: string
 }
 
+const detailId:string|null = parseCookies()?.accessToken
+
 export const linkButtonTitles = [
-    { id:0, title: 'join', path: `${PG.USER}/join2` },
-    { id:1, title: 'Home', path: '/' },
-    { id:3, title: 'counter', path: `${PG.DEMO}/counter` },
-    { id:4, title: 'board list', path: `${PG.BOARD}/list` },
+    { id: 0, title: 'join', path: `${PG.USER}/join2` },
+    { id: 1, title: 'Home', path: '/' },
+    { id: 3, title: 'counter', path: `${PG.DEMO}/counter` },
+    { id: 4, title: 'board list', path: `${PG.BOARD}/list` },
     // { id:5, title: 'article list', path: `${PG.ARTICLE}/list` },
-    { id:6, title: 'My list', path: `${PG.USER}/detail/${jwtDecode<any>(parseCookies().accessToken).id}` }
-];
+    { id: 6, title: 'My list', path: `${PG.USER}/detail/${detailId === null ? jwtDecode<any>(detailId).id:0}` }
+]
 
 
 export default function LinkButton({ id, title, path }: ILinkButton) {

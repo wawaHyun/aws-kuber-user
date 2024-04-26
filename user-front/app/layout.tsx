@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="mt-200">
           <ReduxProvider>
-            {parseCookies().message === 'SUCCESS' && <Header />}
+            {parseCookies().message === 'SUCCESS' &&<Header />}
             {children}
           </ReduxProvider>
         </div>

@@ -29,7 +29,7 @@ export const findArticlesAPI = async (id: number) => {
         const response = await instance().get('/api/articles/detail', {
             params: { id }
         })
-        console.log("response " + response)
+        console.log("findArticlesAPI response : " + response.data)
         return response.data
     } catch (error) {
         console.log(error + " findArticlesAPI EERR!!!")
