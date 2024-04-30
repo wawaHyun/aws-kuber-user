@@ -1,4 +1,4 @@
-package com.example.demo.common.component.pagination;
+package com.turing.api.common.component.pagination;
 
 import lombok.*;
 import org.springframework.data.domain.PageRequest;
@@ -16,12 +16,12 @@ public class PageRequestVo {
     private String type;
     private String keyword;
 
-    public PageRequestVo(){
+    public PageRequestVo() {
         this.page = 1;
         this.size = 9;
     }
 
-    public Pageable getPageable(Sort sort){
-        return PageRequest.of(page -1, size, sort);
+    public Pageable getPageable(Sort sort) {
+        return PageRequest.of(page - 1, size, sort);
     }
 }

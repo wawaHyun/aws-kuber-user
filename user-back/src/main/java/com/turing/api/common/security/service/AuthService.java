@@ -1,11 +1,11 @@
-package com.example.demo.common.security.service;
+package com.turing.api.common.security.service;
 
-import com.example.demo.common.component.Messenger;
-import com.example.demo.user.model.UserDto;
+import com.turing.api.common.component.Messenger;
+import com.turing.api.user.model.UserDto;
 
 public interface AuthService {
 
     Messenger login(UserDto userDto);
+
     String createToken(UserDto user);
 }
-

@@ -1,4 +1,4 @@
-package com.example.demo.common;
+package com.turing.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,8 @@ import java.util.Map;
 public class HomeController {
 
     @GetMapping("/")
-    public String hello(){
+    public String hello() {
         return "Welcome To Spring Boot !";
     }
 
-   }
-
+}

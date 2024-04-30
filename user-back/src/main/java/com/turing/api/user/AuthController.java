@@ -1,10 +1,10 @@
-package com.example.demo.user;
+package com.turing.apiuser;
 
-import com.example.demo.common.component.Messenger;
-import com.example.demo.common.component.pagination.PageRequestVo;
-import com.example.demo.user.model.User;
-import com.example.demo.user.model.UserDto;
-import com.example.demo.user.service.UserService;
+import com.turing.api.component.Messenger;
+import com.turing.api.component.pagination.PageRequestVo;
+import com.turing.apiuser.model.User;
+import com.turing.apiuser.model.UserDto;
+import com.turing.apiuser.service.UserService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +24,19 @@ import java.util.Optional;
         @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
 })
 @RequiredArgsConstructor
-@RequestMapping(path="/api/auth")
+@RequestMapping(path = "/api/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
     private final UserService service;
 
-
-    @GetMapping( path = "/check")
-    public ResponseEntity<Messenger> findByUsername(@RequestParam String username){
+    @GetMapping(path = "/check")
+    public ResponseEntity<Messenger> findByUsername(@RequestParam String username) {
         log.info(username);
         return ResponseEntity.ok(service.existsByUsername(username));
     }
 
-
     @PostMapping(path = "/login")
-    public ResponseEntity<Messenger> login(@RequestBody UserDto userDto){
+    public ResponseEntity<Messenger> login(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(service.login(userDto));
     }
 }

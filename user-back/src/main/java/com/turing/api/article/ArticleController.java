@@ -1,8 +1,8 @@
 package com.turing.api.article;
 
+import com.turing.api.common.component.Messenger;
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.service.ArticleService;
-import com.turing.api.common.component.Messenger;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -67,11 +67,17 @@ public class ArticleController {
         return ResponseEntity.ok(ser.existsById(id));
     }
 
-
     @GetMapping("/search")
     public ResponseEntity<List<ArticleDto>> findArticlesByTitle(@RequestBody ArticleDto param) {
         log.info("입력받은 정보 : {}", param.getTitle());
         return ResponseEntity.ok(ser.findArticlesByTitle(param.getTitle()));
+    }
+
+    
+    @GetMapping("/mylist") // 모든 글에 대한 모든 정보
+    public ResponseEntity<List<ArticleDto>> findArivleByBoard(@RequestParam Long id) {
+        log.info("mylist for : {}",id);
+        return ResponseEntity.ok(ser.findArivleByBoard(id));
     }
 
 
