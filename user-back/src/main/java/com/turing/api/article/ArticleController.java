@@ -24,7 +24,6 @@ public class ArticleController {
 
     private final ArticleService ser;
 
-    // ----------------------------JPA_기본제공_methode------------------------
 
     @SuppressWarnings("static-access")
     @PostMapping("/save")
@@ -68,12 +67,14 @@ public class ArticleController {
         return ResponseEntity.ok(ser.existsById(id));
     }
 
-    // ----------------------------추가_methode------------------------
 
     @GetMapping("/search")
     public ResponseEntity<List<ArticleDto>> findArticlesByTitle(@RequestBody ArticleDto param) {
         log.info("입력받은 정보 : {}", param.getTitle());
         return ResponseEntity.ok(ser.findArticlesByTitle(param.getTitle()));
     }
+
+
+    //ㅜ수수수수수수수수수저어ㅏㄶ머이ㅏㄹ ㅓ미ㅏㄷ좨ㅑㅈㅁㄷ러니ㅏㅎㄹㅇㅁㅇ노히ㅏ멍니ㅏ럼ㄹㄴㄹ
 
 }
