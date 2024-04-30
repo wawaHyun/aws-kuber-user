@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.repository.ArticleRepository;
+import com.turing.api.board.model.Board;
+import com.turing.api.board.repository.BoardRepository;
 import com.turing.api.common.component.Messenger;
+import com.turing.api.user.model.User;
+import com.turing.api.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +23,14 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository repo;
+    private final UserRepository userRepo;
+    private final BoardRepository boardRepo;
 
     @Override
-    public Messenger save(ArticleDto article) {
-        entityToDto((repo.save(dtoToEntity(article))));
+    public Messenger save(ArticleDto dto) {
+        User user = userRepo.findById(dto.getWriter()).orElseGet(null);
+        Board board = boardRepo.findById(dto.getBoard()).orElseGet(null);
+        entityToDto((repo.save(dtoToEntity(dto, user, board))));
         return Messenger.builder()
                 .message("SUCCES")
                 .build();
@@ -46,7 +54,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Messenger modify(ArticleDto dto) {
-        entityToDto((repo.save(dtoToEntity(dto))));
+        User user = userRepo.findById(dto.getWriter()).orElseGet(null);
+        Board board = boardRepo.findById(dto.getBoard()).orElseGet(null);
+        entityToDto((repo.save(dtoToEntity(dto, user, board))));
 
         
         return Messenger.builder()
@@ -60,7 +70,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Long count() {
+    public long count() {
         return repo.count();
     }
 
@@ -72,6 +82,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDto> findArticlesByTitle(String name) {
         return repo.findArticlesByTitle(name);
+    }
+
+    @Override
+    public List<ArticleDto> findArivleByBoard(Long id) {
+        return repo.findArivleByBoard(id);
     }
 
 }

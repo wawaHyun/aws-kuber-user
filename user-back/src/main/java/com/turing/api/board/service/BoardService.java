@@ -17,8 +17,6 @@ public interface BoardService extends CommandService<BoardDto>, QueryService<Boa
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .build();
-
-        // boradId로 db를 조회해서 해당 게시판에 게시된 글의 목 private String title;
     }
 
     default BoardDto entityToDto(Board ent) {
@@ -30,10 +28,5 @@ public interface BoardService extends CommandService<BoardDto>, QueryService<Boa
                 .regDate(String.valueOf(ent.getRegDate()))
                 .build();
     }
-
-    // --------------------------------------------------------------------
-    // command
-
-    // query
 
 }

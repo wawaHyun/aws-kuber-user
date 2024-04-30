@@ -71,8 +71,6 @@ public class BoardController {
         return ser.existsById(id);
     }
 
-    // ----------------------------추가_methode------------------------
-
     @GetMapping("/search")
     public ResponseEntity<List<BoardDto>> findBoardsByTitle(@RequestBody BoardDto param) {
         log.info("입력받은 정보 : {}", param.getTitle());

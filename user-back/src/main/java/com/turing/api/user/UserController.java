@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping( path = "/check")
-    public ResponseEntity<Messenger> findByUsername(@RequestParam String username){
+    public ResponseEntity<Boolean> findByUsername(@RequestParam String username){
         log.info(username);
         return ResponseEntity.ok(service.existsByUsername(username));
     }

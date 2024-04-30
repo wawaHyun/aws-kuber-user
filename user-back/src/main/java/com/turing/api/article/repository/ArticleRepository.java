@@ -13,4 +13,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<ArticleDto> findArticlesByTitle(String name);
 
+    List<ArticleDto> findArivleByBoard(Long id);
+
 }

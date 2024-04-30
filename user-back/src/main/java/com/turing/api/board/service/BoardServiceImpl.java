@@ -59,7 +59,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long count() {
+    public long count() {
         return repo.count();
     }
 

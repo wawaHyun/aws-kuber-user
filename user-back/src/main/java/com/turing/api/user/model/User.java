@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.*;
 
 import com.turing.api.article.model.Article;
-import com.turing.api.common.model.BaseEntity;
+import com.turing.api.common.BaseEntity;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -31,7 +31,7 @@ public class User extends BaseEntity {
 
     private String job;
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Article> article;
 
 }

@@ -1,13 +1,7 @@
 package com.turing.api.user.model;
 
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Component;
-
-import com.turing.api.article.model.Article;
 
 @Component
 @Getter

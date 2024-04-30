@@ -28,4 +28,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("update users set token=:token where id = :id")
     public void modifyTokenById(@Param("token")String token, @Param("id") Long id);
 
+    boolean existsByUsername(String username);
+
 }

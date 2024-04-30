@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Service
 public class AuthServiceImpl implements AuthService {
-    private final UserRepository re;
+    private final UserRepository repo;
 
     @Override
     public Messenger login(UserDto userDto) {
-        boolean flag = re.findByUsername(userDto.getUsername()).getPassword().equals(userDto.getPassword());
-        User user = re.findByUsername(userDto.getUsername());
+        boolean flag = repo.findByUsername(userDto.getUsername()).getPassword().equals(userDto.getPassword());
+        User user = repo.findByUsername(userDto.getUsername());
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FILURE")
                 .accessToken(flag ? createToken(userDto) : "None")

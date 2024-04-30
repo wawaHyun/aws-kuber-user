@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import org.apache.el.stream.Stream;
 import org.springframework.stereotype.Service;
 
-import com.turing.api.common.component.JwtProvider;
 import com.turing.api.common.component.Messenger;
+import com.turing.api.common.component.security.JwtProvider;
 import com.turing.api.user.model.UserDto;
 import com.turing.api.user.model.User;
 import com.turing.api.user.repository.UserRepository;
@@ -63,13 +63,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long count() {
+    public long count() {
         return repo.count();
     }
 
     @Override
     public boolean existsById(Long id) {
         return repo.existsById(id);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return repo.existsByUsername(username);
     }
 
     @Override
@@ -88,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAIL")
-                .token(flag ? jwt.createToken(dto) : "NONE")
+                .accessToken(flag ? jwt.createToken(dto) : "NONE")
                 .build();
     }
 

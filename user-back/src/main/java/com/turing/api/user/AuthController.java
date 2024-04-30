@@ -1,10 +1,10 @@
-package com.turing.apiuser;
+package com.turing.api.user;
 
-import com.turing.api.component.Messenger;
-import com.turing.api.component.pagination.PageRequestVo;
-import com.turing.apiuser.model.User;
-import com.turing.apiuser.model.UserDto;
-import com.turing.apiuser.service.UserService;
+import com.turing.api.common.component.Messenger;
+import com.turing.api.common.component.pagination.PageRequestVo;
+import com.turing.api.user.model.User;
+import com.turing.api.user.model.UserDto;
+import com.turing.api.user.service.UserService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +27,11 @@ import java.util.Optional;
 @RequestMapping(path = "/api/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
+
     private final UserService service;
 
     @GetMapping(path = "/check")
-    public ResponseEntity<Messenger> findByUsername(@RequestParam String username) {
+    public ResponseEntity<Boolean> existsByUsername(@RequestParam String username) {
         log.info(username);
         return ResponseEntity.ok(service.existsByUsername(username));
     }

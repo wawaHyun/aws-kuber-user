@@ -1,7 +1,7 @@
 package com.turing.api.article.model;
 
 import com.turing.api.board.model.Board;
-import com.turing.api.common.model.BaseEntity;
+import com.turing.api.common.BaseEntity;
 import com.turing.api.user.model.User;
 
 import jakarta.persistence.*;

@@ -3,7 +3,7 @@ package com.turing.api.board.model;
 import java.util.List;
 
 import com.turing.api.article.model.Article;
-import com.turing.api.common.model.BaseEntity;
+import com.turing.api.common.BaseEntity;
 
 import jakarta.persistence.*;
 import lombok.*;
