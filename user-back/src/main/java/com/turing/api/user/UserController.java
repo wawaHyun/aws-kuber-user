@@ -1,90 +1,103 @@
 package com.turing.api.user;
 
+import com.turing.api.common.component.Messenger;
+import com.turing.api.common.component.pagination.PageRequestVo;
+import com.turing.api.user.model.User;
+import com.turing.api.user.model.UserDto;
+import com.turing.api.user.service.UserService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.turing.api.common.component.Messenger;
-import com.turing.api.user.model.UserDto;
-import com.turing.api.user.service.UserService;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        @ApiResponse(responseCode = "404", description = "Customer not found") })
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/users")
 @Slf4j
+@RestController
+@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+        @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+        @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+})
+@RequiredArgsConstructor
+@RequestMapping(path="/api/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
+    private final UserService service;
 
-    private final UserService ser;
 
-
-    @PostMapping("/save") // join
-    public ResponseEntity<Messenger> save(@RequestBody UserDto dto) {
-        log.info("입력받은 정보 : {}", dto);
-        return ResponseEntity.ok(ser.save(dto));
+    @GetMapping("/list")
+    public ResponseEntity<List<UserDto>> findall(PageRequestVo vo){
+        log.info("findAll request : {}", vo);
+        return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/list") // 모든 회원에 대한 모든 정보
-    public ResponseEntity<List<UserDto>> findAll() {
-        log.info("runing for : findAll");
-        return ResponseEntity.ok(ser.findAll());
+    @GetMapping( path = "/detail")
+    public ResponseEntity<Optional<UserDto>> findById(@RequestParam Long id){
+        log.info(String.valueOf(id));
+        return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/detail") // 한 사람에 대한 모든 정보
-    public ResponseEntity<UserDto> findById(@RequestParam Long id) {
-        log.info("입력받은 정보 : {}", id);
-        return ResponseEntity.ok(ser.findById(id).orElseGet(UserDto::new));
+    @GetMapping( path = "/check")
+    public ResponseEntity<Messenger> findByUsername(@RequestParam String username){
+        log.info(username);
+        return ResponseEntity.ok(service.existsByUsername(username));
     }
 
-    @PutMapping("/modify") // update
-    public ResponseEntity<Messenger> modify(@RequestBody UserDto param) {
-        log.info("입력받은 정보 : {}", param);
-        return ResponseEntity.ok(ser.modify(param));
-
+    @GetMapping("")
+    public ResponseEntity<Long> count(){
+        return ResponseEntity.ok(service.count());
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Messenger> deleteById(@RequestParam Long id) {
-        log.info("입력받은 정보 : {}", id);
-        return ResponseEntity.ok(ser.deleteById(id));
+    @PostMapping(path = "/check-id")
+    public ResponseEntity<Boolean> existsById(@RequestParam Long id){
+        return  ResponseEntity.ok(service.existsById(id));
     }
 
-    @GetMapping("/count")
-    public ResponseEntity<Long> count() {
-        return ResponseEntity.ok(ser.count());
-
+    @PostMapping(path = "/save")
+    public ResponseEntity<Object> save(@RequestBody User user){
+        return ResponseEntity.ok(service.save(user));
     }
 
-    @GetMapping("/exist")
-    public ResponseEntity<Boolean> existsById(@RequestParam Long id) {
-        log.info("입력 : " + id);
-        return ResponseEntity.ok(ser.existsById(id));
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Messenger> deleteById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteById(id));
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<UserDto>> findUsersByName(@RequestBody UserDto param) {
-        log.info("입력받은 정보 : {}", param.getName());
-        return ResponseEntity.ok(ser.findUsersByName(param.getName()));
+    @PostMapping("/modify")
+    public ResponseEntity<Messenger> modify(@RequestBody User user){
+        return ResponseEntity.ok(service.modify(user));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Messenger> login(@RequestBody UserDto param) {
-        log.info("입력받은 정보 : {}", param.toString());
-        return ResponseEntity.ok(ser.login(param));
+    @PostMapping("path = search")
+    public ResponseEntity<List<?>> findByName(@RequestParam String name){
+        return ResponseEntity.ok(service.findByName(name));
+    }
+
+    @PostMapping("path = find-by-job")
+    public ResponseEntity<List<?>> findByJob(@RequestParam String job){
+        return ResponseEntity.ok(service.findByJob(job));
+    }
+
+//    @PutMapping("/modify")
+//    public ResponseEntity<Messenger> modify(@RequestBody User user) {
+//        service.modify(user);
+//        return null;
+//    }
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<Messenger> login(@RequestBody UserDto userDto){
+        return ResponseEntity.ok(service.login(userDto));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Boolean> logout(@RequestHeader("Authorization") String accessToken){
+        log.info("1- logout request : {}", accessToken);
+        return ResponseEntity.ok(service.logout(accessToken));
     }
 
 }

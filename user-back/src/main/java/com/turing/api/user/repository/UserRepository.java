@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.turing.api.user.model.User;
@@ -19,4 +22,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserDto> findByUsername(String username);
 
     Optional<User> findUsersByUsername(String username);
+
+    
+    @Modifying //싱태변화시킬때 사용
+    @Query("update users set token=:token where id = :id")
+    public void modifyTokenById(@Param("token")String token, @Param("id") Long id);
+
 }
